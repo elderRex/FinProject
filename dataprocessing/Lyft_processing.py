@@ -14,7 +14,7 @@ def custom_dict_insert(lng,lat,dat,time,dict):
             dict[i].insert(dat,time)
             return
     tmpvec = dv.myvec(lat,lng)
-    tmpvec.insert(data,time)
+    tmpvec.insert(dat,time)
     dict.append(tmpvec)
     return
 

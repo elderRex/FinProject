@@ -14,7 +14,7 @@ def custom_dict_insert(lng,lat,dat,time,dict):
             dict[i].insert(dat,time)
             return
     tmpvec = dv.myvec(lat,lng)
-    tmpvec.insert(data,time)
+    tmpvec.insert(dat,time)
     dict.append(tmpvec)
     return
 
@@ -38,17 +38,20 @@ with open('../processed/uberx/uberx.csv','w+') as profile:
                     low_price = float(data["Low"]["s"])
                     if low_price < 7.0:
                         continue
-                    lng = float(data["Lng"]["s"])
-                    lat = float(data["Lat"]["s"])
-                    time = data["Time"]["s"]
-                    rtime = datetime.datetime.fromtimestamp(float(time)).strftime('%c')
-                    #print rtime
-                    #print data["Low"]["s"]
-                    #print data["High"]["s"]
-                    #print "Surge : " + str(((low_price - 7.0) / 7.0))
-                    dat = str(low_price)+' '+str(lat)+' '+str(lng)+' '+str(7.0)
-                    custom_dict_insert(float(data["Lng"]["s"]),float(data["Lat"]["s"]),dat,rtime,loc_data)
-                    dat_cnt += 1
+                    else:
+                        lng = float(data["Lng"]["s"])
+                        lat = float(data["Lat"]["s"])
+                        time = data["Time"]["s"]
+                        rtime = datetime.datetime.fromtimestamp(float(time)).strftime('%c')
+                        #print rtime
+                        #print data["Low"]["s"]
+                        #print data["High"]["s"]
+                        #print "Surge : " + str(((low_price - 7.0) / 7.0))
+                        dat = str(low_price)+' '+str(lat)+' '+str(lng)+' '+str(7.0)
+                        if time == '1481288533.463755':
+                            print dat
+                        custom_dict_insert(float(data["Lng"]["s"]),float(data["Lat"]["s"]),dat,rtime,loc_data)
+                        dat_cnt += 1
 
         for i in range(0,len(loc_data)):
             loc_data[i].data.sort(key=lambda item:item[1])

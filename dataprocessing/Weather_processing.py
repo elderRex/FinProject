@@ -10,10 +10,13 @@ month=['nov','dec']
 with open('../processed/weather.csv','w+') as profile:
     profile.write('date,maxt,mint,rain,wind,humidity\n')
     for file in os.listdir('../DataRepo/Weather'):
-        #print file
+        print file
         dataline = []
         if file[0:3] == 'dec':
-            dataline = '12/0'+file[3]+'/16'
+            if len(file) == 8:
+                dataline = '12/0' + file[3] + '/16'
+            else:
+                dataline = '12/' + file[3:5] + '/16'
         else:
             if len(file) == 8:
                 dataline = '11/0' + file[3] + '/16'

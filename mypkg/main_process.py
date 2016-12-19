@@ -1,21 +1,11 @@
-from custom_algo_pkg import slide_algo as sa
+from Generic_Algo_Pkg.prediction_algo_repo import *
 import sys
 from custom_algo_pkg import block_partition as bp
+from Generic_Algo_Pkg.mykmeans import *
 
 '''
 
 '''
-def surge_svm(location,time,type='uber'):
-    surge = 0
-    return surge
-
-def surge_lr(location,time,type='uber'):
-    surge = 0
-    return surge
-
-def surge_slide(location,time,type='uber'):
-    surge = sa.predict(location,time,type)
-    return surge
 
 def read_block_list():
     block_list = []
@@ -41,23 +31,25 @@ def main(opts,ini_location,time):
     surge_u = 0
     surge_l = 0
     blocklist = read_block_list()
-    print blocklist[0]
-    print blocklist[1]
+    #print blocklist[0]
+    #print blocklist[1]
     #location = [0,0]
     location = bp.bp_user_assign_block(ini_location[0],ini_location[1],blocklist)
-    print location
+    #print location
     if opts == 0:
-        surge_u = surge_svm(location,time,'uber')
-        surge_l = surge_svm(location,time,'lyft')
+        surge_u = surge_svm(location[0],time,'uber')
+        surge_l = surge_svm(location[1],time,'lyft')
     elif opts == 1:
-        surge_u = surge_lr(location,time,'uber')
-        surge_l = surge_lr(location, time,'lyft')
+        surge_u = surge_lr(location[0],time,'uber')
+        surge_l = surge_lr(location[1],time,'lyft')
     elif opts == 2:
-        surge_u = surge_slide(location,time,'uber')
-        surge_l = surge_slide(location, time,'lyft')
+        #surge_u = surge_slide(location[0],time,'uber')
+        surge_u = kmeans_predict(location[0],time,'uber')
+        print 'uber surge ' + str(surge_u)
+        surge_l = surge_slide(location[1],time,'lyft')
     elif opts == 3:
-        surge_u = surge_svm(location,time,'uber')+surge_lr(location,time,'uber')+surge_slide(location,time,'uber')
-        surge_l = surge_svm(location, time,'lyft') + surge_lr(location, time,'lyft') + surge_slide(location, time,'lyft')
+        surge_u = surge_svm(location[0],time,'uber')+surge_lr(location[0],time,'uber')+surge_slide(location[0],time,'uber')
+        surge_l = surge_svm(location[1],time,'lyft') + surge_lr(location[1],time,'lyft') + surge_slide(location[1],time,'lyft')
         surge_u /= 3
         surge_l /= 3
     else:
